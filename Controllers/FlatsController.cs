@@ -1,8 +1,6 @@
-﻿using AparmentSystemAPI.Flats;
-using AparmentSystemAPI.Flats.DTOs;
-using AparmentSystemAPI.Models;
-using AparmentSystemAPI.Models.DTOs;
-using Azure;
+﻿using AparmentSystemAPI.Models.Flats.DTOs;
+using AparmentSystemAPI.Models.Flats.Interfaces;
+using AparmentSystemAPI.Models.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +13,7 @@ namespace AparmentSystemAPI.Controllers
     {
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public Task<ResponseDto<Guid>> AddAsync(AddFlatRequestDto request)
+        public Task<ResponseDto<Guid>> AddEmptyFlat(AddFlatRequestDto request)
         {
             return flatService.AddAsync(request);
         }
@@ -23,7 +21,7 @@ namespace AparmentSystemAPI.Controllers
         //add user to flat
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public Task<ResponseDto<string>> AddUserToFlatAsync(AddUserToFlatRequestDto request)
+        public Task<ResponseDto<string>> AddUserToEmptyFlatAsync(AddUserToFlatRequestDto request)
         {
             return flatService.AddUserToFlatAsync(request);
         }

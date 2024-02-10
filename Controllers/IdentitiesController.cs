@@ -1,9 +1,8 @@
-﻿using AparmentSystemAPI.Models.DTOs;
-using AparmentSystemAPI.Services;
-using AparmentSystemAPI.Tokens.DTOs;
-using AparmentSystemAPI.Tokens;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using AparmentSystemAPI.Models.Identities.DTOs;
+using AparmentSystemAPI.Models.Identities.Interfaces;
+using AparmentSystemAPI.Models.Tokens;
 
 namespace AparmentSystemAPI.Controllers
 {
@@ -14,7 +13,6 @@ namespace AparmentSystemAPI.Controllers
     {
         [Authorize(Roles = "admin")]
         [HttpPost]
-        [Route("create-user")]
         public async Task<IActionResult> CreateUser(UserCreateRequestDto request)
         {
             var response = await identityService.CreateUser(request);
@@ -23,47 +21,6 @@ namespace AparmentSystemAPI.Controllers
             {
                 return BadRequest(response);
             }
-            return Ok(response);
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> CreateToken(TokenCreateRequestDto request)
-        {
-            var response = await tokenService.Create(request);
-            if (response.AnyError)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
-
-
-        [Authorize(Roles = "admin")]
-        [HttpPost]
-        public async Task<IActionResult> AssignRoleToUser(RoleCreateRequestDto request)
-        {
-            var response = await identityService.CreateRole(request);
-            if (response.AnyError)
-            {
-                return BadRequest(response);
-            }
-
-            return Created("", response);
-        }
-
-
-        [AllowAnonymous]    
-        [HttpPost]
-        public async Task<IActionResult> CreateTokenForAdmin(AdminTokenCreateRequestDto request)
-        {
-            var response = await tokenService.CreateAdminToken(request);
-            if (response.AnyError)
-            {
-                return BadRequest(response);
-            }
-
             return Ok(response);
         }
 

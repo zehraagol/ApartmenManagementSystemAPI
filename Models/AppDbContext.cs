@@ -1,5 +1,6 @@
-﻿using AparmentSystemAPI.Apartment;
-using AparmentSystemAPI.Payments;
+﻿using AparmentSystemAPI.Models.Flats;
+using AparmentSystemAPI.Models.Identities;
+using AparmentSystemAPI.Models.Payments;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,20 +16,8 @@ namespace AparmentSystemAPI.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-      
-
-            //modelBuilder.Entity<Flat>()
-            //    .HasMany(f => f.Payments)
-            //    .WithOne(p => p.Flat)
-            //    .HasForeignKey(p => p.FlatId)
-            //    .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete
-
-            //modelBuilder.Entity<Flat>()
-
-           
-
 
         }
 
-        }
     }
+}

@@ -1,8 +1,7 @@
-﻿using AparmentSystemAPI.Apartment;
-using AparmentSystemAPI.Flats.DTOs;
-using AparmentSystemAPI.Models.DTOs;
-using AparmentSystemAPI.Payments;
-using AparmentSystemAPI.Payments.DTOs;
+﻿using AparmentSystemAPI.Models.Flats;
+using AparmentSystemAPI.Models.Flats.DTOs;
+using AparmentSystemAPI.Models.Payments;
+using AparmentSystemAPI.Models.Payments.DTOs;
 using AutoMapper;
 
 namespace AparmentSystemAPI.Mapping
@@ -12,15 +11,14 @@ namespace AparmentSystemAPI.Mapping
         public DtoProfile()
         {  
             CreateMap<FlatDto,Flat>();
-          //  CreateMap<PaymentDto, Payment>();
+            //  CreateMap<PaymentDto, Payment>();
             CreateMap<Payment, PaymentDto>();
             CreateMap<Flat, FlatDto>();
             CreateMap<AddFlatRequestDto, Flat>();
 
             // map addpaymentrequestdto to payment
             CreateMap<AddPaymentRequestDto, Payment>();
-          
-            
+
             // CreateMap<Flat, CreateFlatWithoutUserRequestDto>();            
         }
 

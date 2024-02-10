@@ -1,9 +1,3 @@
-using AparmentSystemAPI;
-using AparmentSystemAPI.Flats;
-using AparmentSystemAPI.Models;
-using AparmentSystemAPI.Payments;
-using AparmentSystemAPI.Services;
-using AparmentSystemAPI.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +7,15 @@ using System.Text;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
+using AparmentSystemAPI.Models.Payments;
+using AparmentSystemAPI.Models.Identities;
+using AparmentSystemAPI.Models.Payments.Interfaces;
+using AparmentSystemAPI.Models.Flats;
+using AparmentSystemAPI.Models.Flats.Interfaces;
+using AparmentSystemAPI.Models.Identities.Interfaces;
+using AparmentSystemAPI.Models;
+using AparmentSystemAPI.Models.UnitOfWorks;
+using AparmentSystemAPI.Models.Tokens;
 //-------------------
 
 
@@ -170,8 +173,3 @@ async Task SeedDataAsync(IServiceProvider services)
     await DataSeeder.SeedData(roleManager,userManager);
     await DataSeeder.SeedFlat(serviceProvider.GetRequiredService<AppDbContext>());
 }
-
-
-
-
-
