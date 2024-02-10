@@ -21,6 +21,7 @@ namespace AparmentSystemAPI.Controllers
                 return paymentService.AdminPaymentAddAsync(request);
             }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public Task<ResponseDto<string>> CreateAidatPaymentForNonPaidFlats(AddAidatPaymentRequestDto request)
         {
@@ -28,6 +29,7 @@ namespace AparmentSystemAPI.Controllers
         }
 
         //get all payments
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public Task<ResponseDto<List<PaymentDto>>> GetAllPayments()
         {
@@ -36,6 +38,7 @@ namespace AparmentSystemAPI.Controllers
 
 
         //get all payments by flatno
+        [Authorize(Roles = "admin,kullanici")]
         [HttpPost]
         public ResponseDto<List<PaymentDto>> GetPaymentsByFlatNo(GetPaymentByFlatNoRequestDto request)
         {
@@ -43,6 +46,7 @@ namespace AparmentSystemAPI.Controllers
         }
 
         //pay payment
+        [Authorize(Roles = "admin,kullanici")]
         [HttpPost]
         public Task<ResponseDto<string>> PayPayment(PayPaymentRequestDto request)
         {
@@ -50,6 +54,7 @@ namespace AparmentSystemAPI.Controllers
         }
 
         //get total payment by flatno
+        [Authorize(Roles = "admin,kullanici")]
         [HttpPost]
         public Task<ResponseDto<int>> GetTotalPaymentByFlatNo(GetTotalPaymentByFlatNoRequestDto request)
         {
@@ -57,6 +62,7 @@ namespace AparmentSystemAPI.Controllers
         }
 
         //get regularly paying users
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public Task<ResponseDto<List<AppUser>>> RegularyPayingUsers(RegularlyPayingUsersRequestDto request)
         {
@@ -64,15 +70,12 @@ namespace AparmentSystemAPI.Controllers
         }
 
         //get non paid aidat users for this month
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public Task<ResponseDto<List<Guid?>>> GetNonPaidAidatUsersForThisMonth()
         {
             return paymentService.GetNonPaidAidatUsersForThisMonth();
         }
-
-
-
-
 
         }
     }

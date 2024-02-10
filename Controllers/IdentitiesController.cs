@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AparmentSystemAPI.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class IdentitiesController(IIdentityService identityService, TokenService tokenService) : ControllerBase
     {
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [Route("create-user")]
         public async Task<IActionResult> CreateUser(UserCreateRequestDto request)
@@ -23,10 +23,10 @@ namespace AparmentSystemAPI.Controllers
             {
                 return BadRequest(response);
             }
-
             return Ok(response);
-
         }
+
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateToken(TokenCreateRequestDto request)
         {
@@ -39,6 +39,8 @@ namespace AparmentSystemAPI.Controllers
             return Ok(response);
         }
 
+
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> AssignRoleToUser(RoleCreateRequestDto request)
         {
@@ -51,6 +53,8 @@ namespace AparmentSystemAPI.Controllers
             return Created("", response);
         }
 
+
+        [AllowAnonymous]    
         [HttpPost]
         public async Task<IActionResult> CreateTokenForAdmin(AdminTokenCreateRequestDto request)
         {
@@ -64,6 +68,7 @@ namespace AparmentSystemAPI.Controllers
         }
 
         //update user
+        [Authorize(Roles = "admin")]
         [HttpPut]
         public async Task<IActionResult> UpdateUser(UserUpdateRequestDto request)
         {
@@ -77,6 +82,7 @@ namespace AparmentSystemAPI.Controllers
         }
 
         //delete user
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         public async Task<IActionResult> DeleteUser(UserDeleteRequestDto request)
         {
