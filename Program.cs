@@ -9,6 +9,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+//-------------------
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
+//-------------------
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,8 +63,6 @@ builder.Services.AddSwaggerGen();
 //});
 
 
-
-
 builder.Services.AddAutoMapper(typeof(Program));
 
 
@@ -77,27 +81,33 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 });
 
-builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentity<AppUser, AppRole>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.User.RequireUniqueEmail = true;
+
+}).AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddAuthentication(options =>
 {
+    //schema
+
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opt =>
+}).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opt =>
 {
     var signatureKey = builder.Configuration.GetSection("TokenOptions")["SignatureKey"]!;
     var issuer = builder.Configuration.GetSection("TokenOptions")["Issuer"]!;
     opt.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateLifetime = true,
+
         ValidateIssuerSigningKey = true,
-        //ValidateIssuerSigningKey = false,
         ValidateAudience = false,
         ValidateIssuer = true,
-        ValidIssuer = issuer, 
-        //ValidateIssuer = false,
-        
+        ValidIssuer = issuer,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signatureKey))
     };
 });
@@ -130,14 +140,15 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  
 }
+app.UseSwagger();
+app.UseSwaggerUI();
 
 //call  CreatePrimaryAdminUser method from TokenService.cs
 //var tokenService = app.Services.GetRequiredService<TokenService>();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AparmentSystemAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class PaymentController(IPaymentService paymentService) : ControllerBase
     {
-           // [Authorize(Roles = "admin")]
+            [Authorize(Roles = "admin")]
              [HttpPost]
             public Task<ResponseDto<Guid>> AdminPaymentAdd(AddPaymentRequestDto request)
             {
