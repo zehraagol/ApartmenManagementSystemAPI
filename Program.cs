@@ -16,6 +16,8 @@ using AparmentSystemAPI.Models.Identities.Interfaces;
 using AparmentSystemAPI.Models;
 using AparmentSystemAPI.Models.UnitOfWorks;
 using AparmentSystemAPI.Models.Tokens;
+using AparmentSystemAPI.Models.MainBuildings.Interfaces;
+using AparmentSystemAPI.Models.MainBuildings;
 //-------------------
 
 
@@ -77,6 +79,10 @@ builder.Services.AddScoped<IFlatRepository, FlatRepository>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
+builder.Services.AddScoped<IMainBuildingRepository, MainBuildingRepository>();
+builder.Services.AddScoped<IMainBuildingService, MainBuildingService>();
+
+
 
 
 
@@ -89,7 +95,6 @@ builder.Services.AddIdentity<AppUser, AppRole>(options =>
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
-    options.User.RequireUniqueEmail = true;
 
 }).AddEntityFrameworkStores<AppDbContext>();
 
@@ -171,5 +176,5 @@ async Task SeedDataAsync(IServiceProvider services)
     var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
 
     await DataSeeder.SeedData(roleManager,userManager);
-    await DataSeeder.SeedFlat(serviceProvider.GetRequiredService<AppDbContext>());
+    await DataSeeder.SeedMainBuilding(serviceProvider.GetRequiredService<AppDbContext>());
 }

@@ -8,7 +8,6 @@ namespace AparmentSystemAPI.Models.UnitOfWorks
 {
     public interface IUnitOfWork : IDisposable
     {
-        // AppDbContext Context { get; }
         UserManager<AppUser> UserManager { get; }
         IFlatRepository Flat { get; }
         IPaymentRepository PaymentRepository { get; }

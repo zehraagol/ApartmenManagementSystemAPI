@@ -19,5 +19,8 @@ namespace AparmentSystemAPI.Models.Payments
 
         [ForeignKey("AppUserId")] public Guid? AppUserId { get; set; }
 
+        //apartment
+        [ForeignKey("MainBuildingId")] public Guid? MainBuildingId { get; set; }
+
     }
 }

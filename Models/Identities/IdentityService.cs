@@ -49,7 +49,6 @@ namespace AparmentSystemAPI.Models.Identities
 
             var hasRole = await roleManager.RoleExistsAsync(appRole.Name);
 
-
             IdentityResult? roleCreateResult = null;
             if (!hasRole)
             {

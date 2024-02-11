@@ -14,9 +14,7 @@ namespace AparmentSystemAPI.Models.Tokens
     {
         public async Task<ResponseDto<TokenCreateResponseDto>> Create(TokenCreateRequestDto request)
         {
-
             var hasUser = await userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber && x.TCNumber == request.TcNumber);
-
 
             if (hasUser is null)
             {
@@ -34,10 +32,8 @@ namespace AparmentSystemAPI.Models.Tokens
                 new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
             var claimList = new List<Claim>();
-
             var userIdAsClaim = new Claim(ClaimTypes.NameIdentifier, hasUser.Id.ToString());
             var userNameAsClaim = new Claim(ClaimTypes.Name, hasUser.UserName!);
-            //var phoneNumberAsClaim = new Claim(ClaimTypes.MobilePhone, hasUser.PhoneNumber!);
             var idAsClaim = new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString());
 
             var userClaims = await userManager.GetClaimsAsync(hasUser);
@@ -48,7 +44,6 @@ namespace AparmentSystemAPI.Models.Tokens
             }
 
             claimList.Add(userIdAsClaim);
-            //claimList.Add(phoneNumberAsClaim);
             claimList.Add(userNameAsClaim);
             claimList.Add(idAsClaim);
 
@@ -72,7 +67,7 @@ namespace AparmentSystemAPI.Models.Tokens
             return ResponseDto<TokenCreateResponseDto>.Success(responseDto);
         }
 
-        //--------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------------
         public async Task<ResponseDto<TokenCreateResponseDto>> CreateAdminToken(AdminTokenCreateRequestDto request)
         {
             var hasUser = await userManager.FindByNameAsync(request.UserName);
@@ -104,19 +99,10 @@ namespace AparmentSystemAPI.Models.Tokens
 
             var userIdAsClaim = new Claim(ClaimTypes.NameIdentifier, hasUser.Id.ToString());
             var userNameAsClaim = new Claim(ClaimTypes.Name, hasUser.UserName!);
-            //var phoneNumberAsClaim = new Claim(ClaimTypes.MobilePhone, hasUser.PhoneNumber!);
             var idAsClaim = new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString());
-
-            //var userClaims = await userManager.GetClaimsAsync(hasUser);
-
-            //foreach (var claim in userClaims)
-            //{
-            //    claimList.Add(new Claim(claim.Type, claim.Value));
-            //}
 
 
             claimList.Add(userIdAsClaim);
-            //claimList.Add(phoneNumberAsClaim);
             claimList.Add(userNameAsClaim);
             claimList.Add(idAsClaim);
 

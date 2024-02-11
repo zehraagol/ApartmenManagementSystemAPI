@@ -1,8 +1,12 @@
 ﻿using AparmentSystemAPI.Models.Flats;
 using AparmentSystemAPI.Models.Identities;
+using AparmentSystemAPI.Models.MainBuildings;
 using AparmentSystemAPI.Models.Payments;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
+
 
 namespace AparmentSystemAPI.Models
 {
@@ -11,6 +15,11 @@ namespace AparmentSystemAPI.Models
         //flats table
         public DbSet<Flat> Flats { get; set; } = default!;
         public DbSet<Payment> Payments { get; set; } = default!;
+        public DbSet<MainBuilding> MainBuildings { get; set; } = default!;
+
+
+
+
 
         //OnModelCreating method    
         protected override void OnModelCreating(ModelBuilder modelBuilder)

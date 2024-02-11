@@ -80,6 +80,10 @@ namespace AparmentSystemAPI.Models.Payments
         public async Task<ResponseDto<List<PaymentDto>>> GetAllPayments()
         {
             var payments = await _unitOfWork.PaymentRepository.GetAllAsync();
+
+            // filter out the payments that has mainBuildingId != null
+            payments = payments.Where(p => p.MainBuildingId == null).ToList();
+
             var paymentDtos = _mapper.Map<List<PaymentDto>>(payments);
             return ResponseDto<List<PaymentDto>>.Success(paymentDtos);
         }

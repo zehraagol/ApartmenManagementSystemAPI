@@ -17,44 +17,6 @@ namespace AparmentSystemAPI.Models.Flats
         private readonly IMapper _mapper = mapper;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        //public async Task<ResponseDto<Guid>> AddAsync(AddFlatRequestDto request)
-        //{
-        //    Flat flat = new Flat();
-        //    // initialize without mapper
-
-        //    var TcNumber = request.UserTCNumber;
-        //    var user = _context.Users.Where(u => u.TCNumber == TcNumber).FirstOrDefault();
-
-        //    if (user == null)
-        //    {
-        //        return ResponseDto<Guid>.Fail("User not found!");
-        //    }
-
-        //    if (flat == null)
-        //    {
-        //        return ResponseDto<Guid>.Fail("Flat not found!");
-        //    }
-
-        //    if (flat != null)
-        //    {
-        //        flat.Id = Guid.NewGuid();
-        //        flat.BlockInfo = request.BlockInfo;
-        //        flat.FlatNumber = request.FlatNumber;
-        //        flat.FloorNumber = request.FloorNumber;
-        //        flat.BlockInfo = request.BlockInfo;
-        //        flat.FlatType = request.FlatType;
-        //        flat.isEmpty = request.isEmpty;
-        //        flat.UserId = user.Id;
-
-
-        //        await _unitOfWork.Flat.AddAsync(flat);
-        //        await _unitOfWork.SaveChangesAsync();
-        //        return ResponseDto<Guid>.Success(flat.Id);
-        //    }
-        //    return ResponseDto<Guid>.Fail("Empty Product!");
-        //}
-
-
 
         // add flat without user using mapper
         public async Task<ResponseDto<Guid>> AddAsync(AddFlatRequestDto request)
@@ -86,8 +48,6 @@ namespace AparmentSystemAPI.Models.Flats
             await _unitOfWork.SaveChangesAsync();
             return ResponseDto<string>.Success("User added to flat successfully");
         }
-
     }
-
 }
 

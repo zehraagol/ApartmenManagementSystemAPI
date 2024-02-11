@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AparmentSystemAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240210181335_initial")]
-    partial class initial
+    [Migration("20240211131809_newdb")]
+    partial class newdb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace AparmentSystemAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AparmentSystemAPI.Apartment.Flat", b =>
+            modelBuilder.Entity("AparmentSystemAPI.Models.Flats.Flat", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +59,7 @@ namespace AparmentSystemAPI.Migrations
                     b.ToTable("Flats");
                 });
 
-            modelBuilder.Entity("AparmentSystemAPI.Models.AppRole", b =>
+            modelBuilder.Entity("AparmentSystemAPI.Models.Identities.AppRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,7 +87,7 @@ namespace AparmentSystemAPI.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("AparmentSystemAPI.Models.AppUser", b =>
+            modelBuilder.Entity("AparmentSystemAPI.Models.Identities.AppUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -157,7 +157,31 @@ namespace AparmentSystemAPI.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("AparmentSystemAPI.Payments.Payment", b =>
+            modelBuilder.Entity("AparmentSystemAPI.Models.MainBuildings.MainBuilding", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("BuildingAge")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
+                    b.ToTable("MainBuildings");
+                });
+
+            modelBuilder.Entity("AparmentSystemAPI.Models.Payments.Payment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,6 +191,9 @@ namespace AparmentSystemAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("FlatId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("MainBuildingId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("PaymentAmount")
@@ -192,6 +219,8 @@ namespace AparmentSystemAPI.Migrations
                     b.HasIndex("AppUserId");
 
                     b.HasIndex("FlatId");
+
+                    b.HasIndex("MainBuildingId");
 
                     b.ToTable("Payments");
                 });
@@ -299,33 +328,46 @@ namespace AparmentSystemAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AparmentSystemAPI.Apartment.Flat", b =>
+            modelBuilder.Entity("AparmentSystemAPI.Models.Flats.Flat", b =>
                 {
-                    b.HasOne("AparmentSystemAPI.Models.AppUser", "User")
+                    b.HasOne("AparmentSystemAPI.Models.Identities.AppUser", "User")
                         .WithMany("Flat")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AparmentSystemAPI.Payments.Payment", b =>
+            modelBuilder.Entity("AparmentSystemAPI.Models.MainBuildings.MainBuilding", b =>
                 {
-                    b.HasOne("AparmentSystemAPI.Models.AppUser", null)
+                    b.HasOne("AparmentSystemAPI.Models.Identities.AppUser", "User")
+                        .WithOne("MainBuildings")
+                        .HasForeignKey("AparmentSystemAPI.Models.MainBuildings.MainBuilding", "UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AparmentSystemAPI.Models.Payments.Payment", b =>
+                {
+                    b.HasOne("AparmentSystemAPI.Models.Identities.AppUser", null)
                         .WithMany("Payments")
                         .HasForeignKey("AppUserId");
 
-                    b.HasOne("AparmentSystemAPI.Apartment.Flat", "Flat")
+                    b.HasOne("AparmentSystemAPI.Models.Flats.Flat", "Flat")
                         .WithMany("Payments")
                         .HasForeignKey("FlatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AparmentSystemAPI.Models.MainBuildings.MainBuilding", null)
+                        .WithMany("Payments")
+                        .HasForeignKey("MainBuildingId");
 
                     b.Navigation("Flat");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("AparmentSystemAPI.Models.AppRole", null)
+                    b.HasOne("AparmentSystemAPI.Models.Identities.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -334,7 +376,7 @@ namespace AparmentSystemAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("AparmentSystemAPI.Models.AppUser", null)
+                    b.HasOne("AparmentSystemAPI.Models.Identities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -343,7 +385,7 @@ namespace AparmentSystemAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("AparmentSystemAPI.Models.AppUser", null)
+                    b.HasOne("AparmentSystemAPI.Models.Identities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -352,13 +394,13 @@ namespace AparmentSystemAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("AparmentSystemAPI.Models.AppRole", null)
+                    b.HasOne("AparmentSystemAPI.Models.Identities.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AparmentSystemAPI.Models.AppUser", null)
+                    b.HasOne("AparmentSystemAPI.Models.Identities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -367,22 +409,30 @@ namespace AparmentSystemAPI.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("AparmentSystemAPI.Models.AppUser", null)
+                    b.HasOne("AparmentSystemAPI.Models.Identities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AparmentSystemAPI.Apartment.Flat", b =>
+            modelBuilder.Entity("AparmentSystemAPI.Models.Flats.Flat", b =>
                 {
                     b.Navigation("Payments");
                 });
 
-            modelBuilder.Entity("AparmentSystemAPI.Models.AppUser", b =>
+            modelBuilder.Entity("AparmentSystemAPI.Models.Identities.AppUser", b =>
                 {
                     b.Navigation("Flat");
 
+                    b.Navigation("MainBuildings")
+                        .IsRequired();
+
+                    b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("AparmentSystemAPI.Models.MainBuildings.MainBuilding", b =>
+                {
                     b.Navigation("Payments");
                 });
 #pragma warning restore 612, 618

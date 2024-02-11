@@ -11,16 +11,12 @@ namespace AparmentSystemAPI.Mapping
         public DtoProfile()
         {  
             CreateMap<FlatDto,Flat>();
-            //  CreateMap<PaymentDto, Payment>();
             CreateMap<Payment, PaymentDto>();
             CreateMap<Flat, FlatDto>();
             CreateMap<AddFlatRequestDto, Flat>();
-
-            // map addpaymentrequestdto to payment
             CreateMap<AddPaymentRequestDto, Payment>();
 
-            // CreateMap<Flat, CreateFlatWithoutUserRequestDto>();            
+      
         }
-
     }
 }

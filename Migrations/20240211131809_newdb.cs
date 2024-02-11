@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AparmentSystemAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class newdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -180,6 +180,25 @@ namespace AparmentSystemAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MainBuildings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BuildingAge = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MainBuildings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MainBuildings_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Payments",
                 columns: table => new
                 {
@@ -191,7 +210,8 @@ namespace AparmentSystemAPI.Migrations
                     PaymentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PaymentAmount = table.Column<int>(type: "int", nullable: false),
                     FlatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AppUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    AppUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    MainBuildingId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -207,6 +227,11 @@ namespace AparmentSystemAPI.Migrations
                         principalTable: "Flats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Payments_MainBuildings_MainBuildingId",
+                        column: x => x.MainBuildingId,
+                        principalTable: "MainBuildings",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -254,6 +279,13 @@ namespace AparmentSystemAPI.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MainBuildings_UserId",
+                table: "MainBuildings",
+                column: "UserId",
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Payments_AppUserId",
                 table: "Payments",
                 column: "AppUserId");
@@ -262,6 +294,11 @@ namespace AparmentSystemAPI.Migrations
                 name: "IX_Payments_FlatId",
                 table: "Payments",
                 column: "FlatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_MainBuildingId",
+                table: "Payments",
+                column: "MainBuildingId");
         }
 
         /// <inheritdoc />
@@ -290,6 +327,9 @@ namespace AparmentSystemAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Flats");
+
+            migrationBuilder.DropTable(
+                name: "MainBuildings");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

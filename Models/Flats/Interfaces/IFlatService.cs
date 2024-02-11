@@ -7,6 +7,6 @@ namespace AparmentSystemAPI.Models.Flats.Interfaces
     {
         Task<ResponseDto<Guid>> AddAsync(AddFlatRequestDto request);
         Task<ResponseDto<string>> AddUserToFlatAsync(AddUserToFlatRequestDto request);
-        //Task<ResponseDto<Guid>> CreateFlatWithoutUser(CreateFlatWithoutUserRequestDto request);
+
     }
 }
