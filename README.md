@@ -82,5 +82,13 @@ The system features several key relationships:
 ## Getting Started
 Administrators and users should follow the respective guides above to interact with the system effectively.
 
+## Special Thanks
+My endless thanks to Papara and their valuable team who carried out this training, Mr. Fatih Çakıroğlu who taught the lessons, and the Coderspace team who coordinated the program.
+
+
+<img width="320" alt="image" src="https://github.com/zehraagol/ApartmenManagementSystemAPI/assets/72569851/c63feffb-1e18-4dba-922d-28bf579a3ad9">
+
+<img width="320" alt="image" src="https://github.com/zehraagol/ApartmenManagementSystemAPI/assets/72569851/c0e93890-f7a5-41c5-a567-45993cd526af">
+
 
 
