@@ -38,11 +38,16 @@ namespace AparmentSystemAPI.Models.Flats
             {
                 return ResponseDto<string>.Fail("Flat not found!");
             }
+            if (!flat.isEmpty)
+            {
+                return ResponseDto<string>.Fail("Flat is not empty!");
+            }
             var user = await _userManager.Users.Where(u => u.TCNumber == request.UserTCNumber).FirstOrDefaultAsync(); //useri bulduk
             if (user == null)
             {
                 return ResponseDto<string>.Fail("User not found!");
             }
+
             flat.UserId = user.Id;
             flat.isEmpty = false;
             await _unitOfWork.SaveChangesAsync();

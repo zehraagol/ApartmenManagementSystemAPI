@@ -175,7 +175,7 @@ namespace AparmentSystemAPI.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("MainBuildings");
+                    b.ToTable("MainBuilding");
                 });
 
             modelBuilder.Entity("AparmentSystemAPI.Models.Payments.Payment", b =>

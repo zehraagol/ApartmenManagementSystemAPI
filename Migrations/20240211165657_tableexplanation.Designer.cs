@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AparmentSystemAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240211134603_check")]
-    partial class check
+    [Migration("20240211165657_tableexplanation")]
+    partial class tableexplanation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -178,7 +178,7 @@ namespace AparmentSystemAPI.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("MainBuildings");
+                    b.ToTable("MainBuilding");
                 });
 
             modelBuilder.Entity("AparmentSystemAPI.Models.Payments.Payment", b =>

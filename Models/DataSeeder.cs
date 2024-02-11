@@ -8,6 +8,7 @@ namespace AparmentSystemAPI.Models
 {
     public class DataSeeder
     {
+        #region when the application starts, seed the database with default data
 
         // if there is no user with "admin" role in database, create a user with "admin" role and assign its UserName and Password to "admin" and "admin" respectively.
         public static async Task SeedData(RoleManager<AppRole> roleManager, UserManager<AppUser> userManager)
@@ -53,7 +54,7 @@ namespace AparmentSystemAPI.Models
             }
 
         }
-
+       
         // if there is no flat in database with flatType = "Apartment" create a flat with flatType = "Apartment" and the other properties are default."
         public static async Task SeedMainBuilding(AppDbContext context)
         {
@@ -79,6 +80,7 @@ namespace AparmentSystemAPI.Models
             await context.SaveChangesAsync();
 
         }
+        #endregion
     }
 }
 

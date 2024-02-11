@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AparmentSystemAPI.Models.Payments
 {
+    [Table("Payments")]
     public class Payment
     {
         // odenmis ve odenmemis bilgisi ekleyerek fatura ve fiş logicini ekledim.

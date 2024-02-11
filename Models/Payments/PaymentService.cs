@@ -18,7 +18,7 @@ namespace AparmentSystemAPI.Models.Payments
         private readonly IMapper _mapper = mapper;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-
+        #region Assig Bill to User
         public async Task<ResponseDto<Guid>> AdminPaymentAddAsync(AddPaymentRequestDto request)
         {
             Payment payment = _mapper.Map<Payment>(request);
@@ -39,7 +39,11 @@ namespace AparmentSystemAPI.Models.Payments
             return ResponseDto<Guid>.Success(payment.Id);
         }
 
+        #endregion
+
         // create payment for all flats from flat list that has not paymentType = "aidat" and paymentMonth and paymentYear is equal to request
+
+        #region Assing Aidat Payments To All Unpaid Flats
         public async Task<ResponseDto<string>> CreateAidatPaymentForNonPaidFlats(AddAidatPaymentRequestDto request)
         {
             // var flats = _context.Flats.Include(u => u.User).Where(u => u.PaymentType != "aidat").ToList();
@@ -75,8 +79,10 @@ namespace AparmentSystemAPI.Models.Payments
             await _unitOfWork.SaveChangesAsync();
             return ResponseDto<string>.Success("Payments created for all flats");
         }
+        #endregion
 
         // get all payments
+        #region Get All Payments for related payment type
         public async Task<ResponseDto<List<PaymentDto>>> GetAllPayments()
         {
             var payments = await _unitOfWork.PaymentRepository.GetAllAsync();
@@ -87,7 +93,9 @@ namespace AparmentSystemAPI.Models.Payments
             var paymentDtos = _mapper.Map<List<PaymentDto>>(payments);
             return ResponseDto<List<PaymentDto>>.Success(paymentDtos);
         }
+        #endregion
 
+        #region control of single user is regular or not for aidat payments
         public bool isRegular(AppUser user)
         {
             var paymentType = "aidat";
@@ -117,8 +125,10 @@ namespace AparmentSystemAPI.Models.Payments
 
             return true;
         }
+        #endregion
 
         // user can pay payment that has not been paid before only for his/her flat
+        #region (BONUS) Pay Payment for related flat number and payment type,Control that If not paid on time, increase the payment amount by 10% 
         public async Task<ResponseDto<string>> PayPayment(PayPaymentRequestDto request)
         {
             var flatNo = request.FlatNo;
@@ -160,8 +170,11 @@ namespace AparmentSystemAPI.Models.Payments
             await _unitOfWork.SaveChangesAsync();
             return ResponseDto<string>.Success("Payment has been paid!");
         }
+        #endregion
 
         // user can see all payments that has been paid for his/her flat
+
+        #region Get Payments with given flat number
         public ResponseDto<List<PaymentDto>> GetPaymentsByFlatNo(GetPaymentByFlatNoRequestDto request)
         {
 
@@ -197,8 +210,11 @@ namespace AparmentSystemAPI.Models.Payments
             var paymentDtos = _mapper.Map<List<PaymentDto>>(payments);
             return ResponseDto<List<PaymentDto>>.Success(paymentDtos);
         }
+        #endregion
 
         // get sum of all payments for given flat number within given year or month
+
+        #region Get Total Payment Amount with given flat number
         public async Task<ResponseDto<int>> GetTotalPaymentByFlatNo(GetTotalPaymentByFlatNoRequestDto request)
         {
             var flatNo = request.FlatNo;
@@ -231,8 +247,11 @@ namespace AparmentSystemAPI.Models.Payments
             var totalPayment = payments.Sum(p => p.PaymentAmount);
             return ResponseDto<int>.Success(totalPayment);
         }
+        #endregion
 
         // get the users who has paid his/her payments regulary within given time period and given payment type. If the month and year of payment date are the same with payment month and payment year properties, it means it is paid on time.
+
+        #region (BONUS) :  Get Users Paying Regularly so that %10 discount can be applied
         public async Task<ResponseDto<List<AppUser>>> RegularyPayingUsers(RegularlyPayingUsersRequestDto request)
         {
             var paymentType = request.PaymentType;
@@ -275,9 +294,11 @@ namespace AparmentSystemAPI.Models.Payments
             }
             return ResponseDto<List<AppUser>>.Success(regularlyPayingUsers);
         }
+        #endregion
 
         // get the users who has not paid his/her aidat payments for this month
 
+        #region Get Non Paid Aidat Users for this month
         public async Task<ResponseDto<List<Guid?>>> GetNonPaidAidatUsersForThisMonth() // ekstra ekledim
         {
             var paymentType = "aidat";
@@ -295,6 +316,7 @@ namespace AparmentSystemAPI.Models.Payments
 
             return ResponseDto<List<Guid?>>.Success(users);
         }
+        #endregion
 
     }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AparmentSystemAPI.Models.Flats
 {
+    [Table("Flats")]
     public class Flat
     {
         // bir flatin birden çok kullanıcısı olamaz ama bir kullanıcının birden çok dairesi olabilir mantığı ile ilişki kurdum.

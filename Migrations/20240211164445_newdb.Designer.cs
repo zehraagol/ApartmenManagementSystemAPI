@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AparmentSystemAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240211131809_newdb")]
+    [Migration("20240211164445_newdb")]
     partial class newdb
     {
         /// <inheritdoc />
@@ -163,8 +163,8 @@ namespace AparmentSystemAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("BuildingAge")
-                        .HasColumnType("int");
+                    b.Property<string>("BuildingAge")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");

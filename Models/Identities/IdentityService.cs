@@ -14,6 +14,7 @@ namespace AparmentSystemAPI.Models.Identities
         public UserManager<AppUser> UserManager { get; set; } = userManager;
         public RoleManager<AppRole> RoleManager { get; set; } = roleManager;
 
+        #region create user
         public async Task<ResponseDto<Guid>> CreateUser(UserCreateRequestDto request)
         {
 
@@ -23,8 +24,7 @@ namespace AparmentSystemAPI.Models.Identities
                 UserName = request.FullName,
                 TCNumber = request.TCNumber,
                 PhoneNumber = request.PhoneNumber,
-                //FlatId = flat.Id,
-                // FlatList = new List<Flat> { flat} // kisi bir daire daha satın aldıysa kontrol yap ve kullanıcı flatlist.add de.               
+                   
             };
 
             var result = await userManager.CreateAsync(user);
@@ -38,7 +38,9 @@ namespace AparmentSystemAPI.Models.Identities
 
             return ResponseDto<Guid>.Success(user.Id);
         }
+        #endregion
 
+        #region create role
         public async Task<ResponseDto<string>> CreateRole(RoleCreateRequestDto request)
         {
             var appRole = new AppRole
@@ -83,10 +85,10 @@ namespace AparmentSystemAPI.Models.Identities
 
             return ResponseDto<string>.Success(string.Empty);
         }
+        #endregion
 
-        //--------------------------------------------------------------------------------
 
-        //update user
+        #region update user
 
         public async Task<ResponseDto<string>> UpdateUser(UserUpdateRequestDto request)
         {
@@ -113,8 +115,10 @@ namespace AparmentSystemAPI.Models.Identities
 
             return ResponseDto<string>.Success("Kullanıcı başarıyla güncellendi.");
         }
+        #endregion
 
-        // delete user
+        
+        #region delete user
         public async Task<ResponseDto<string>> DeleteUser(UserDeleteRequestDto request)
         {
             var hasUser = await userManager.Users.Where(x => x.TCNumber == request.TCNumber).FirstOrDefaultAsync();
@@ -154,6 +158,7 @@ namespace AparmentSystemAPI.Models.Identities
 
             return ResponseDto<string>.Success("Kullanıcı başarıyla silindi.");
         }
+        #endregion
 
     }
 }

@@ -12,6 +12,7 @@ namespace AparmentSystemAPI.Models.Tokens
 {
     public class TokenService(IConfiguration configuration, UserManager<AppUser> userManager, AppDbContext _context)
     {
+        #region Kullanıcıya Token Oluşturma
         public async Task<ResponseDto<TokenCreateResponseDto>> Create(TokenCreateRequestDto request)
         {
             var hasUser = await userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber && x.TCNumber == request.TcNumber);
@@ -67,7 +68,9 @@ namespace AparmentSystemAPI.Models.Tokens
             return ResponseDto<TokenCreateResponseDto>.Success(responseDto);
         }
 
-        //---------------------------------------------------------------------------------------------------------
+        #endregion
+
+        #region Admin Token Oluşturma
         public async Task<ResponseDto<TokenCreateResponseDto>> CreateAdminToken(AdminTokenCreateRequestDto request)
         {
             var hasUser = await userManager.FindByNameAsync(request.UserName);
@@ -125,7 +128,7 @@ namespace AparmentSystemAPI.Models.Tokens
 
             return ResponseDto<TokenCreateResponseDto>.Success(responseDto);
         }
-
+        #endregion
     }
 }
 
